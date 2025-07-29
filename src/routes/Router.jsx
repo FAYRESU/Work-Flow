@@ -9,14 +9,14 @@ const router = createBrowserRouter([
     element: <Home />,
   },
 
-  //   {
-  //     path: "/add",
-  //     element: <Add />,
-  //   },
+  {
+    path: "/add",
+    element: <Add />,
+  },
 
-  //   {
-  //     path: "/update/:id",
-  //     element: <Update />,
-  //   },
+  {
+    path: "/update/:id",
+    element: <Update />,
+  },
 ]);
 export default router;
