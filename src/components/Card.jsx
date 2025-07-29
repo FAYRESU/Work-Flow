@@ -11,7 +11,7 @@ const Cards = (props) => {
 
   const confirmDelete = async () => {
     if (!idToDelete) {
-      console.log("No ID to delete was set.");
+      console.log("No ID to delete was ");
       setShowDelete(false);
       return;
     }
