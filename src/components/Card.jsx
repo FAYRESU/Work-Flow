@@ -1,38 +1,43 @@
 import React, { useState } from "react";
 
+
 const Cards = (props) => {
+
   const [showDelete, setShowDelete] = useState(false);
   const [idToDelete, setIdToDelete] = useState("");
 
   const handleDelete = async (id) => {
     setIdToDelete(id);
     setShowDelete(true);
-  };
 
-  const confirmDelete = async () => {
-    if (!idToDelete) {
-      console.log("No ID to delete was ");
-      setShowDelete(false);
-      return;
-    }
+  }
+
+    const confirmDelete = async () => {
+
+      if (!idToDelete){
+        console.log("No ID to delete was ser. ");
+        setShowDelete(false);
+        return;
+      }
+    
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/restaurants/" + idToDelete,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch("http://localhost:3000/restaurants/" + idToDelete, {
+        method: "DELETE",
+      });
 
       if (response.ok) {
-        console.log(`รายการ : ${idToDelete} ถูกลบแล้ว`);
-      } else {
+        console.log (`รายการ : ${idToDelete} ถูกลบแล้ว`);
+
+      }else{
         console.error("Failed to delete item:", response.status);
         alert("เกิดข้อผิดพลาดในการลบข้อมูล");
       }
+
     } catch (error) {
       console.log("เกิดข้อผิดพลาด: ", error);
-    } finally {
+
+    }finally{
       setShowDelete(false);
       setIdToDelete(null);
     }
@@ -41,64 +46,60 @@ const Cards = (props) => {
   const cancelDelete = () => {
     setShowDelete(false);
     setIdToDelete(null);
-  };
+  }
+
+
 
   return (
-    <div className="card w-96 bg-white shadow-xl hover:shadow-2xl transition duration-300 border border-pink-200">
-      <figure className="h-60 bg-gray-100 overflow-hidden">
-        <img
-          src={props.img}
-          alt={props.title}
-          className="object-cover w-full h-full"
-          onError={(e) => (e.target.src = "/fallback-image.png")}
-        />
+    <div className="card bg-base-100 w-96 shadow-sm bg-pink-200 text-black">
+      <figure>
+        <img src={props.img} alt="Shoes" />
       </figure>
 
       <div className="card-body">
-        <h2 className="card-title text-pink-600">
+        <h2 className="card-title">
           {props.title}
+          
           <div className="badge badge-secondary">NEW</div>
+          
         </h2>
-        <p className="text-gray-600">{props.type}</p>
+     
+        <p>{props.type}</p>
 
-        <div className="card-actions justify-end mt-4 space-x-2">
-          <button
-            onClick={() => handleDelete(props.id)}
-            className="btn btn-error btn-sm"
-          >
-            ลบ
-          </button>
-          <a href={`/update/${props.id}`} className="btn btn-warning btn-sm">
-            แก้ไข
+        <div className="card-actions justify-end">
+          <button onClick={() => handleDelete(props.id)} className="btn btn-soft btn-error">Delete</button>
+          {/* <div className="badge badge-outline">Edit</div> */}
+          <a href={"/update/" + props.id} className="btn btn-soft btn-warning">
+            Edit
           </a>
         </div>
       </div>
 
-      {showDelete && (
-        <dialog className="modal modal-open">
-          <div className="modal-box bg-pink-500 text-white">
-            <h3 className="font-bold text-lg">ยืนยันการลบข้อมูล</h3>
-            <p className="py-4">
-              คุณแน่ใจหรือไม่ว่าต้องการลบรายการ{" "}
-              <span className="font-bold">"{props.title}"</span>?
+
+      {/* ใช้ Component Daisy */}
+{showDelete && (
+        <dialog id="delete_confirmation_modal" className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg text-white">ยืนยันการลบข้อมูล</h3>
+            <p className="py-4 text-white">
+              คุณแน่ใจหรือไม่ว่าต้องการลบรายการ "{props.title}"?
             </p>
             <div className="modal-action">
               <button className="btn btn-error" onClick={confirmDelete}>
                 ยืนยันการลบ
               </button>
-              <button
-                className="btn btn-outline btn-white"
-                onClick={cancelDelete}
-              >
+              <button className="btn btn-white" onClick={cancelDelete}>
                 ยกเลิก
               </button>
             </div>
           </div>
+          {/* ส่วนนี้ทำให้คลิกนอก Modal แล้วปิดได้ */}
           <form method="dialog" className="modal-backdrop">
-            <button onClick={cancelDelete}>ปิด</button>
+            <button onClick={cancelDelete}>close</button>
           </form>
         </dialog>
       )}
+
     </div>
   );
 };

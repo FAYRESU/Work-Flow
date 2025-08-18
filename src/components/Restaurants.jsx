@@ -1,22 +1,20 @@
 import React from "react";
-import Cards from "./Cards";
+import Cards from "./Card";
 
 const Restaurants = ({ restaurants }) => {
   return (
     <div className="flex">
-      <div className=" flex flex-wrap justify-center gap-4">
+      <div className="flex flex-wrap justify-center gap-4">
         {restaurants &&
-          restaurants.map((restaurants) => {
-            return (
-              <Cards
-                key={restaurants.id}
-                id={restaurants.id}
-                title={restaurants.title}
-                type={restaurants.type}
-                img={restaurants.img}
-              />
-            );
-          })}
+          restaurants.map((r) => (
+            <Cards
+              key={r.id}
+              id={r.id}
+              title={r.title}
+              type={r.type}
+              img={r.img}
+            />
+          ))}
       </div>
     </div>
   );
