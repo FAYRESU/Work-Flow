@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Restaurants from "../Component/Restaurants";
+import Restaurants from "../components/Restaurants";
+
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
-  const [FilteredRestaurants, setFileredRestaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
   const handleSearch = (keyword) => {
     if (keyword === "") {
-      setFileredRestaurants(restaurants);
+      setFilteredRestaurants(restaurants);
       return;
     }
 
@@ -17,32 +18,33 @@ const Home = () => {
       );
     });
 
-    setFileredRestaurants(result);
+    setFilteredRestaurants(result);
   };
+
   useEffect(() => {
-    //call api: getAllRestuarants
+    // call api: getAllRestaurants
     fetch("http://localhost:3000/restaurants")
       .then((res) => {
-        //convert to Json
         console.log(res);
         return res.json();
       })
       .then((response) => {
         setRestaurants(response);
-        setFileredRestaurants(response);
+        setFilteredRestaurants(response);
       })
       .catch((err) => {
         console.log(err.message);
       });
   }, []);
+
   return (
     <div className="container mx-auto">
       <div>
         <h1 className="title justify-center text-3xl text-center m-5 p-5">
-          Grap Restuarant
+          Grap Restaurant
         </h1>
-        <div className="mb-5 flex justify-center item-center">
-          <label className="input flex item-center gap-2 w-2xl text-black bg-blue-300">
+        <div className="mb-5 flex justify-center items-center">
+          <label className="input flex items-center gap-2 max-w-2xl w-full text-black bg-blue-300 p-2 rounded-md">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -61,20 +63,17 @@ const Home = () => {
             </svg>
             <input
               type="search"
-          
               name="keyword"
               onChange={(e) => handleSearch(e.target.value)}
               required
               placeholder="Search"
-            
+              className="bg-transparent outline-none flex-1"
             />
           </label>
         </div>
-        {/* <div>
-          <Restaurants />
-        </div> */}
       </div>
-      <Restaurants restaurants={FilteredRestaurants} />
+
+      <Restaurants restaurants={filteredRestaurants} />
     </div>
   );
 };
